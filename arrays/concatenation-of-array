@@ -15,7 +15,7 @@ Explanation: The array ans is formed as follows:
 - ans = [1,2,1,1,2,1]
 
 ###############################################################################################################
-Solution:
+Solution1:
 
 func getConcatenation(nums []int) []int {
     ans := make([]int, 0, 2*len(nums))
@@ -29,6 +29,8 @@ func getConcatenation(nums []int) []int {
     }
     return ans
 }
+
+Solution2:
 
 func getConcatenation(nums []int) []int {
     v := append(nums, nums...)
