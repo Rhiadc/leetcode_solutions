@@ -1,0 +1,78 @@
+Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence.
+
+You must write an algorithm that runs in O(n) time.
+
+ 
+
+Example 1:
+
+Input: nums = [100,4,200,1,3,2]
+Output: 4
+Explanation: The longest consecutive elements sequence is [1, 2, 3, 4]. Therefore its length is 4.
+
+Example 2:
+
+Input: nums = [0,3,7,2,5,8,4,6,0,1]
+Output: 9
+###############################################################################################################
+Solution1:
+func longestConsecutive(nums []int) int {
+    if len(nums) <= 0 {
+        return 0
+    }
+	sort.Ints(nums)
+	cons, max := 1, 0
+	for i := 0; i < len(nums)-1; i++ {
+		if nums[i+1]-nums[i] == 1 {
+			cons++
+			continue
+		}else if nums[i+1] == nums[i] {
+            continue
+        }
+		if cons > max {
+			max = cons
+		}
+		cons = 1
+	}
+	if cons > max {
+		max = cons
+	}
+
+	return max
+}
+
+Solution2:
+func longestConsecutive(nums []int) int {
+	if len(nums) <= 0 {
+		return 0
+	}
+	arr := make(map[int]bool)
+	max := 0
+	//find the smallest number and create a map
+	for _, v := range nums {
+		arr[v] = true
+	}
+
+	//initiate the proccess to seeing if a sequence exists
+	for _, v := range nums {
+		if arr[v-1] {
+			continue
+		}
+		
+		sequence := 1
+		temp := v + 1
+		for arr[temp] {
+			sequence++
+			temp++
+		}
+		
+		if sequence > max {
+			max = sequence
+		}
+		 
+	}
+	
+	return max
+}
+
+
