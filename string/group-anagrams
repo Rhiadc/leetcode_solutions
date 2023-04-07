@@ -1,0 +1,70 @@
+Given an array of strings strs, group the anagrams together. You can return the answer in any order.
+
+An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+ 
+
+Example 1:
+
+Input: strs = ["eat","tea","tan","ate","nat","bat"]
+Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
+
+Example 2:
+
+Input: strs = [""]
+Output: [[""]]
+
+Example 3:
+
+Input: strs = ["a"]
+Output: [["a"]]
+###############################################################################################################
+Solution1:
+
+func groupAnagrams(strs []string) [][]string {
+	words := make(map[string]bool)
+	if len(strs) == 1 {
+		return [][]string{strs}
+	}
+	var output [][]string
+	for _, k := range strs {
+		words[k] = true
+	}
+
+	for i, v := range strs {
+		if !words[v] {
+			continue
+		}
+		temp := make([]string, 0)
+		temp = append(temp, v)
+		words[strs[i]] = false
+		for j := i + 1; j < len(strs); j++ {
+			if isAnagram(v, strs[j]) {
+				words[strs[j]] = false
+				temp = append(temp, strs[j])
+			}
+		}
+
+		output = append(output, temp)
+	}
+	return output
+}
+
+func isAnagram(actual, compared string) bool {
+	if len(actual) != len(compared) {
+		return false
+	}
+	cmap, amap := make(map[byte]int), make(map[byte]int)
+	for k, v := range actual {
+		amap[byte(v)]++
+		cmap[compared[k]]++
+	}
+
+	for k, v := range amap {
+		if v-cmap[k] != 0 {
+			return false
+		}
+	}
+
+	return true
+}
